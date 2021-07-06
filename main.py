@@ -1,26 +1,31 @@
 import perceptron as ai
 import random
 
-if __name__ == '':
-    # META PARAMETROS
-    layers = [64, 32, 10]
-    ratio_aprendizaje = 0.1
-    tamanho_batch = 10
-    iteraciones = 50
 
-    per = ai.Perceptron(layers, ratio_aprendizaje)
-    dataset = ai.load_dataset('dataset.csv', False, True)
-    for epoch in range(iteraciones):
-        random.shuffle(dataset)
-        per.entrenar(dataset, tamanho_batch)
-        acierto, error = per.calcular_stats(dataset)
-        print("[ EPOCH: %d || Tasa acierto: %.3f %% || Error: %.3f ]" % (epoch, acierto * 100, error))
-    per.guardar("digitReader")
+def train():
+    # META PARAMETERS
+    layers = [64, 32, 10]
+    ratio = 0.1
+    batch_size = 10
+    epochs = 50
+
+    per = ai.Perceptron(layers, ratio)
+    dataset = ai.load_dataset('dataset.csv', ";", False, True)
+    for epoch in range(epochs):
+        random.shuffle(dataset)  # Better results when dataset is shuffled
+        per.train(dataset, batch_size)
+        acc, error = per.get_stats(dataset)
+        print("[ EPOCH: %d || Accuracy: %.3f %% || Error: %.3f ]" % (epoch+1, acc * 100, error))
+    per.save("digitReader")
+
+
+def test():
+    per = ai.Perceptron.load("digitReader")
+    dataset = ai.load_dataset('dataset.csv', ";", False, True)
+    acc, error = per.get_stats(dataset)
+    print("[ Accuracy: %.3f %% || Error: %.3f ]" % (acc * 100, error))
+
 
 if __name__ == '__main__':
-    per = ai.Perceptron.cargar("digitReader")
-    dataset = ai.load_dataset('dataset.csv', False, True)
-    random.shuffle(dataset)
-    acierto, error = per.calcular_stats(dataset)
-    print("[ Tasa acierto: %.3f %% || Error: %.3f ]" % (acierto * 100, error))
+    test()
 
