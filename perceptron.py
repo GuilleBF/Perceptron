@@ -55,8 +55,8 @@ class Perceptron:
             layer = [
                 {'weights': [random.uniform(-1, 1) for _ in range(layers[k - 1])],
                  'bias': random.uniform(-1, 1),
-                 'output': 0,
-                 'delta': 0} for _ in range(layers[k])
+                 'output': 0.0,
+                 'delta': 0.0} for _ in range(layers[k])
             ]
             self.network.append(layer)
         self.learning_rate = learning_rate
